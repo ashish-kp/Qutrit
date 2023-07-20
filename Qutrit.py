@@ -216,7 +216,7 @@ class Qutrit:
         - x_l: The width of the plot. Default is 20.
         - p_q: A list of indices specifying the qutrits to consider for probability computation. Default is an empty list.
         """
-
+        plt.rcParams.update({'font.size': 22})
         keys = []
         vals = []
         if len(p_q) == 0:
@@ -224,11 +224,13 @@ class Qutrit:
         else:
             den = Qutrit.partial_trace(self, p_q)
         for i in range(den.shape[0]):
-            vals.append(np.real(den[i, i]))
-            keys.append(d2t(i, self.num - len(p_q)))
+            a = np.real(den[i, i])
+            if a > 1e-4:
+                vals.append(a)
+                keys.append(d2t(i, self.num - len(p_q)))
         plt.figure(figsize = (x_l, 3 * self.num))
         plt.bar(keys, vals)
-        plt.ylim(0, max(vals) + 0.1)
+        plt.ylim(0, max(vals) + 0.1 * max(vals))
         plt.title("Probabilities")
         for i, height in enumerate(vals):
             if height > 1e-4:
