@@ -12,7 +12,7 @@ Steps to use:
 - Then you can access the library by doing the following import:
   ```from Qutrit import Qutrit```
 
-As of yet the library contains the ternary X gates, H gate, S gate and the Z(omega, omega^2) gate.
+As of yet the library contains the ternary X gates, H and H_dagger gate, S gate and the Z(omega, omega^2) gate and the Controlled X+1 gate and Controlled X+1_dagger gate.
 All the gates were constructed as mentioned in the paper [here](https://arxiv.org/pdf/2204.00552.pdf).
 
 # Some Basic Examples
