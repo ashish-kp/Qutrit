@@ -216,7 +216,7 @@ class Qutrit:
         - x_l: The width of the plot. Default is 20.
         - p_q: A list of indices specifying the qutrits to consider for probability computation. Default is an empty list.
         """
-        plt.rcParams.update({'font.size': 18})
+        plt.rcParams.update({'font.size': 22})
         keys = []
         vals = []
         if len(p_q) == 0:
@@ -261,11 +261,13 @@ class Qutrit:
         om = np.exp(2 * np.pi * 1j / 3)
         zp1 = np.array([[1, 0, 0], [0, om, 0], [0, 0, om**2]])
         self.state = _make_unitary(zp1, pos, self.num) @ self.state
-
+        print(self.state)
+        
     def ZM1(self, pos):
         om = np.exp(2 * np.pi * 1j / 3)
         zm1 = np.array([[1, 0, 0], [0, om**2, 0], [0, 0, om]])
         self.state = _make_unitary(zm1, pos, self.num) @ self.state
+        print(self.state)
             
     def H(self, pos):
         om = np.exp(2 * np.pi * 1j / 3)
@@ -325,5 +327,140 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(cx_)
             self.state = np.linalg.pinv(cx_) @ self.state
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+    
+    def CU_2(self, gate_, ctrl, trgt):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            num = self.num
+            den = np.eye(3**num) + 1j * np.zeros((3**num, 3**num))
+            for i in range(3**num):
+                t_val = d2t(i, num)
+                if t_val[ctrl] == '2':
+                    t_val_arr = [int(x) for x in t_val]
+                    t_val_arr[trgt] = 0
+                    for j in range(3):
+                        den[t2d(t_val), t2d(t_val_arr)] = gate_[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
+            #             print(t_val, t_val_arr)
+                        t_val_arr[trgt] += 1
+            self.state = den @ self.state
+        else:
+            print(self.num, ctrl, trgt)
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CU_2_DAG(self, gate_, ctrl, trgt):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            num = self.num
+            den = np.eye(3**num) + 1j * np.zeros((3**num, 3**num))
+            for i in range(3**num):
+                t_val = d2t(i, num)
+                if t_val[ctrl] == '2':
+                    t_val_arr = [int(x) for x in t_val]
+                    t_val_arr[trgt] = 0
+                    for j in range(3):
+                        den[t2d(t_val), t2d(t_val_arr)] = gate_[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
+            #             print(t_val, t_val_arr)
+                        t_val_arr[trgt] += 1
+            self.state = np.linalg.pinv(den) @ self.state
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CU_1(self, gate_, ctrl, trgt):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            num = self.num
+            den = np.eye(3**num) + 1j * np.zeros((3**num, 3**num))
+            for i in range(3**num):
+                t_val = d2t(i, num)
+                if t_val[ctrl] == '1':
+                    t_val_arr = [int(x) for x in t_val]
+                    t_val_arr[trgt] = 0
+                    for j in range(3):
+                        den[t2d(t_val), t2d(t_val_arr)] = gate_[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
+            #             print(t_val, t_val_arr)
+                        t_val_arr[trgt] += 1
+            self.state = den @ self.state
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CU_1_DAG(self, gate_, ctrl, trgt):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            num = self.num
+            den = np.eye(3**num) + 1j * np.zeros((3**num, 3**num))
+            for i in range(3**num):
+                t_val = d2t(i, num)
+                if t_val[ctrl] == '1':
+                    t_val_arr = [int(x) for x in t_val]
+                    t_val_arr[trgt] = 0
+                    for j in range(3):
+                        den[t2d(t_val), t2d(t_val_arr)] = gate_[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
+            #             print(t_val, t_val_arr)
+                        t_val_arr[trgt] += 1
+            self.state = np.linalg.pinv(den) @ self.state
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CU(self, gate_, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            num = self.num
+            den = np.eye(3**num) + 1j * np.zeros((3**num, 3**num))
+            gate_2 = gate_ @ gate_
+            for i in range(3**num):
+                t_val = d2t(i, num)
+                if t_val[ctrl] == '1':
+                    t_val_arr = [int(x) for x in t_val]
+                    t_val_arr[trgt] = 0
+                    for j in range(3):
+                        den[t2d(t_val), t2d(t_val_arr)] = gate_[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
+            #             print(t_val, t_val_arr)
+                        t_val_arr[trgt] += 1
+                elif t_val[ctrl] == '2':
+                    t_val_arr = [int(x) for x in t_val]
+                    t_val_arr[trgt] = 0
+                    for j in range(3):
+                        den[t2d(t_val), t2d(t_val_arr)] = gate_2[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
+            #             print(t_val, t_val_arr)
+                        t_val_arr[trgt] += 1
+            if show_gate == True:
+                return den
+            self.state = den @ self.state
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CU_DAG(self, gate_, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            num = self.num
+            den = np.eye(3**num) + 1j * np.zeros((3**num, 3**num))
+            gate_2 = gate_ @ gate_
+            for i in range(3**num):
+                t_val = d2t(i, num)
+                if t_val[ctrl] == '1':
+                    t_val_arr = [int(x) for x in t_val]
+                    t_val_arr[trgt] = 0
+                    for j in range(3):
+                        den[t2d(t_val), t2d(t_val_arr)] = gate_[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
+            #             print(t_val, t_val_arr)
+                        t_val_arr[trgt] += 1
+                elif t_val[ctrl] == '2':
+                    t_val_arr = [int(x) for x in t_val]
+                    t_val_arr[trgt] = 0
+                    for j in range(3):
+                        den[t2d(t_val), t2d(t_val_arr)] = gate_2[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
+            #             print(t_val, t_val_arr)
+                        t_val_arr[trgt] += 1
+            if show_gate == True:
+                return np.linalg.pinv(den)
+            self.state = np.linalg.pinv(den) @ self.state
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
