@@ -10,7 +10,7 @@ To use this library, the prerequisite modules which are to be installed already 
 Steps to use:
 - Download the "Qutrit.py" file and store it in the folder, where you open your Jupyter Notebooks.
 - Then you can access the library by doing the following import:
-  ```from Qutrit import Qutrit
+  ```from Qutrit import Qutrit```
 
 As of yet the library contains the ternary X gates, H gate, S gate and the Z(omega, omega^2) gate.
 All the gates were constructed as mentioned in the paper [here](https://arxiv.org/pdf/2204.00552.pdf).
