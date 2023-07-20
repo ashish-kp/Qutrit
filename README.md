@@ -8,8 +8,8 @@ To use this library, the prerequisite modules which are to be installed already 
 - seaborn
 
 Steps to use:
-- Download the "Qutrit.py" file and store it in the folder, where you open your Jupyter Notebooks.
-- Then you can access the library by doing the following import:
+1. Download the "Qutrit.py" file and store it in the folder, where you open your Jupyter Notebooks.
+2. Then you can access the library by doing the following import:
   ```from Qutrit import Qutrit```
 
 As of yet the library contains the ternary X gates, H and H_dagger gate, S gate and the Z(omega, omega^2) gate and the Controlled X+1 gate and Controlled X+1_dagger gate.
