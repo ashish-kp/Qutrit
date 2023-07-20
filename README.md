@@ -16,4 +16,4 @@ As of yet the library contains the ternary X gates, H and H_dagger gate, S gate 
 All the gates were constructed as mentioned in the paper [here](https://arxiv.org/pdf/2204.00552.pdf).
 
 # Some Basic Examples
-![Qutrit Hadamard](./Example_imgs/Hadamard_qutrit.png)
+![Qutrit Hadamard](example_imgs/Hadamard_qutrit.png)
