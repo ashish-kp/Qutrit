@@ -261,13 +261,11 @@ class Qutrit:
         om = np.exp(2 * np.pi * 1j / 3)
         zp1 = np.array([[1, 0, 0], [0, om, 0], [0, 0, om**2]])
         self.state = _make_unitary(zp1, pos, self.num) @ self.state
-        print(self.state)
-        
+
     def ZM1(self, pos):
         om = np.exp(2 * np.pi * 1j / 3)
         zm1 = np.array([[1, 0, 0], [0, om**2, 0], [0, 0, om]])
         self.state = _make_unitary(zm1, pos, self.num) @ self.state
-        print(self.state)
             
     def H(self, pos):
         om = np.exp(2 * np.pi * 1j / 3)
