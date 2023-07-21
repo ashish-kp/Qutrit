@@ -497,7 +497,8 @@ class Qutrit:
             Qutrit._draw_ctr(self, 'CUd', ctr, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
-            
+
+#Alternate method for Controlled Unitary
 #     def CU_DAG(self, gate_, ctrl, trgt, show_gate = False):
 #         if ctrl == trgt:
 #             raise ValueError("Control cannot be same as Target")
