@@ -130,7 +130,7 @@ class Qutrit:
         for i in range(self.num - 1):
             state = np.kron(state, np.array([1, 0, 0]))
         self.state = state
-        self.circ_store = [[] for i in range(num)]
+        self.circ_store = [['|0>'] for i in range(num)]
         
     def initialize(self, arr, pos):
         """
@@ -158,18 +158,18 @@ class Qutrit:
         for x in self.circ_store: max_.append(len(x)) 
         for i in range(self.num): 
             while len(self.circ_store[i]) <= np.max(max_): 
-                self.circ_store[i].append('---')
+                self.circ_store[i].append('\u2014\u2014\u2014')
         for i in range(self.num):
             if i == ctr:
                 self.circ_store[i].append(' * ')
             elif i == trgt:
                 self.circ_store[i].append(gate_name)
             elif ctr < trgt and ctr < i < trgt:
-                self.circ_store[i].append('-|-')
+                self.circ_store[i].append('\u2014|\u2014')
             elif ctr > trgt and trgt < i < ctr:
-                self.circ_store[i].append('-|-')
+                self.circ_store[i].append('\u2014|\u2014')
             else:
-                self.circ_store[i].append('---')
+                self.circ_store[i].append('\u2014\u2014\u2014')
             
     def plot_density(self, p_q = [],  axis = False, x = 15, y = 6, an = True):
         """
@@ -181,7 +181,6 @@ class Qutrit:
         - y: The height of the plot. Default is 6.
         - an: Boolean flag to show/hide the annotations. Default is True.
         """
-        plt.rcParams.update({'font.size': 10})
         if len(p_q) == 0:
             den = self.density()
         else:
@@ -294,7 +293,7 @@ class Qutrit:
         for x in self.circ_store:
             for y in x:
                 print(y, end = '')
-                print('-', end = '')
+                print('\u2014', end = '')
             print()
         
     def X01(self, pos):
@@ -383,7 +382,7 @@ class Qutrit:
             if show_gate == True:
                 return cx_
             self.state = cx_ @ self.state
-            Qutrit._draw_ctr(self, '-X-', ctr, trgt)
+            Qutrit._draw_ctr(self, '\u2014X\u2014', ctr, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -497,8 +496,7 @@ class Qutrit:
             Qutrit._draw_ctr(self, 'CUd', ctr, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
-
-#Alternate method for Controlled Unitary
+            
 #     def CU_DAG(self, gate_, ctrl, trgt, show_gate = False):
 #         if ctrl == trgt:
 #             raise ValueError("Control cannot be same as Target")
