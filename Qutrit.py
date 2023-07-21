@@ -260,7 +260,7 @@ class Qutrit:
                     ans[j][k] += rho[ll[j]][ll[k]]
         return ans
     
-    def get_probs(self, x_l = 10, y_l = 7, p_q = [], f_size = 10):
+    def get_probs(self, x_l = 10, y_l = 7, p_q = []):
         """
         Computes and plots the probabilities of the qutrit's states.
 
@@ -268,7 +268,7 @@ class Qutrit:
         - x_l: The width of the plot. Default is 20.
         - p_q: A list of indices specifying the qutrits to consider for probability computation. Default is an empty list.
         """
-        plt.rcParams.update({'font.size': f_size})
+        plt.rcParams.update({'font.size': 12})
         keys = []
         vals = []
         if len(p_q) == 0:
@@ -490,7 +490,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, 'CU2', ctr, trgt)
+            Qutrit._draw_ctr(self, 'CU2', ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
         
@@ -502,7 +502,7 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            Qutrit._draw_ctr(self, 'C2d', ctr, trgt)
+            Qutrit._draw_ctr(self, 'C2d', ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -514,7 +514,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, 'CU1', ctr, trgt)
+            Qutrit._draw_ctr(self, 'CU1', ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -529,7 +529,7 @@ class Qutrit:
             if name == '':
                 nm = 'C1d'
             else: name = nm
-            Qutrit._draw_ctr(self, nm, ctr, trgt)
+            Qutrit._draw_ctr(self, nm, ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -541,7 +541,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, 'C_U', ctr, trgt)
+            Qutrit._draw_ctr(self, 'C_U', ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -553,7 +553,7 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            Qutrit._draw_ctr(self, 'CUd', ctr, trgt)
+            Qutrit._draw_ctr(self, 'CUd', ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
