@@ -409,6 +409,56 @@ class Qutrit:
             Qutrit._draw_ctr(self, 'X_d', ctr, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CX_2(self, ctr, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[0, 0, 1], [1, 0, 0], [0, 1, 0]])
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['2'])
+            if show_gate == True:
+                return den
+            self.state = den @ self.state
+            Qutrit._draw_ctr(self, 'X_2', ctr, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CX_2_DAG(self, ctr, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[0, 0, 1], [1, 0, 0], [0, 1, 0]])
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['2'])
+            if show_gate == True:
+                return np.linalg.pinv(den)
+            self.state = np.linalg.pinv(den) @ self.state
+            Qutrit._draw_ctr(self, 'X2d', ctr, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CX_1(self, ctr, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['1'])
+            if show_gate == True:
+                return den
+            self.state = den @ self.state
+            Qutrit._draw_ctr(self, 'X_1', ctrl, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CX_1_DAG(self, ctr, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['1'])
+            if show_gate == True:
+                return np.linalg.pinv(den)
+            self.state = np.linalg.pinv(den) @ self.state
+            Qutrit._draw_ctr(self, 'X1d', ctrl, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
     
 #     def CU_2(self, gate_, ctrl, trgt):
 #         if ctrl == trgt:
@@ -490,7 +540,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, 'CU2', ctrl, trgt)
+            Qutrit._draw_ctr(self, 'U_2', ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
         
@@ -502,7 +552,7 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            Qutrit._draw_ctr(self, 'C2d', ctrl, trgt)
+            Qutrit._draw_ctr(self, 'U2d', ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -514,11 +564,11 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, 'CU1', ctrl, trgt)
+            Qutrit._draw_ctr(self, 'U_1', ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
-    def CU_1_DAG(self, gate_, ctrl, trgt, show_gate = False, name = ''):
+    def CU_1_DAG(self, gate_, ctrl, trgt, show_gate = False):
         if ctrl == trgt:
             raise ValueError("Control cannot be same as Target")
         if ctrl < self.num and trgt < self.num:
@@ -526,10 +576,7 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            if name == '':
-                nm = 'C1d'
-            else: name = nm
-            Qutrit._draw_ctr(self, nm, ctrl, trgt)
+            Qutrit._draw_ctr(self, 'U1d', ctrl, trgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
