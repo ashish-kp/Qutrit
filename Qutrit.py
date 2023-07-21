@@ -181,6 +181,7 @@ class Qutrit:
         - y: The height of the plot. Default is 6.
         - an: Boolean flag to show/hide the annotations. Default is True.
         """
+        plt.rcParams.update({'font.size': 10})
         if len(p_q) == 0:
             den = self.density()
         else:
