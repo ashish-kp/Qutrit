@@ -260,7 +260,7 @@ class Qutrit:
                     ans[j][k] += rho[ll[j]][ll[k]]
         return ans
     
-    def get_probs(self, x_l = 10, y_l = 7, p_q = []):
+    def get_probs(self, x_l = 10, y_l = 7, p_q = [], f_size = 10):
         """
         Computes and plots the probabilities of the qutrit's states.
 
@@ -268,7 +268,7 @@ class Qutrit:
         - x_l: The width of the plot. Default is 20.
         - p_q: A list of indices specifying the qutrits to consider for probability computation. Default is an empty list.
         """
-        plt.rcParams.update({'font.size': 12})
+        plt.rcParams.update({'font.size': f_size})
         keys = []
         vals = []
         if len(p_q) == 0:
