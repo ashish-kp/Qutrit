@@ -268,7 +268,7 @@ class Qutrit:
         - x_l: The width of the plot. Default is 20.
         - p_q: A list of indices specifying the qutrits to consider for probability computation. Default is an empty list.
         """
-        plt.rcParams.update({'font.size': 22})
+        plt.rcParams.update({'font.size': 12})
         keys = []
         vals = []
         if len(p_q) == 0:
