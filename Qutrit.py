@@ -260,7 +260,7 @@ class Qutrit:
                     ans[j][k] += rho[ll[j]][ll[k]]
         return ans
     
-    def get_probs(self, x_l = 20, p_q = []):
+    def get_probs(self, x_l = 10, y_l = 7, p_q = []):
         """
         Computes and plots the probabilities of the qutrit's states.
 
@@ -280,7 +280,7 @@ class Qutrit:
             if a > 1e-4:
                 vals.append(a)
                 keys.append(d2t(i, self.num - len(p_q)))
-        plt.figure(figsize = (x_l, 3 * self.num))
+        plt.figure(figsize = (x_l, y_l))
         plt.bar(keys, vals)
         plt.ylim(0, max(vals) + 0.1 * max(vals))
         plt.title("Probabilities")
