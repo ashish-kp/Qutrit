@@ -22,3 +22,7 @@ The code doesnot contain any function which performs measurement of any sort. Th
 ![Qutrit Hadamard](example_imgs/Hadamard_qutrit.png)
 ![Bell States](example_imgs/qutrit_bell.png)
 ![Supadense](example_imgs/Qutrit_superdense.png)
+
+Added the following:
+- Added the methods 'CU_2', 'CU_1', 'CU_2_DAG' etc., for controlled unitary operations, which take in a gate as input and the control and target positions.
+- Added the method 'draw' which is an attempt to visualize the circuits.
