@@ -289,6 +289,13 @@ class Qutrit:
                 plt.text(i, height, str(np.round(height, 3)), ha='center', va='bottom')
         plt.show()
         
+    def draw(self):
+        for x in self.circ_store:
+            for y in x:
+                print(y, end = '')
+                print('-', end = '')
+            print()
+        
     def X01(self, pos):
         x01 = np.array([[0, 1, 0], [1, 0, 0], [0, 0, 1]])
         self.state = _make_unitary(x01, pos, self.num) @ self.state
