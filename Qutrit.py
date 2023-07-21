@@ -153,7 +153,7 @@ class Qutrit:
                     ini_state = np.kron(ini_state, np.array([1, 0, 0]))
         self.state = ini_state
         
-    def _draw_ctr(self, gate_name, ctr, trgt):
+    def _draw_ctr(self, gate_name, ctr, trgt, ctr_name = ' * '):
         max_ = []
         for x in self.circ_store: max_.append(len(x)) 
         for i in range(self.num): 
@@ -161,7 +161,7 @@ class Qutrit:
                 self.circ_store[i].append('\u2014\u2014\u2014')
         for i in range(self.num):
             if i == ctr:
-                self.circ_store[i].append(' * ')
+                self.circ_store[i].append(ctr_name)
             elif i == trgt:
                 self.circ_store[i].append(gate_name)
             elif ctr < trgt and ctr < i < trgt:
@@ -290,6 +290,11 @@ class Qutrit:
         plt.show()
         
     def draw(self):
+        max_ = []
+        for x in self.circ_store: max_.append(len(x)) 
+        for i in range(self.num): 
+            while len(self.circ_store[i]) <= np.max(max_): 
+                self.circ_store[i].append('\u2014\u2014\u2014')
         for x in self.circ_store:
             for y in x:
                 print(y, end = '')
@@ -419,7 +424,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, 'X_2', ctrl, trgt)
+            Qutrit._draw_ctr(self, ' X ', ctrl, trgt, ' 2 ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -432,7 +437,7 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            Qutrit._draw_ctr(self, 'X2d', ctrl, trgt)
+            Qutrit._draw_ctr(self, 'X_d', ctrl, trgt, ' 2 ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -445,7 +450,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, 'X_1', ctrl, trgt)
+            Qutrit._draw_ctr(self, ' X ', ctrl, trgt, ' 1 ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -458,7 +463,7 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            Qutrit._draw_ctr(self, 'X1d', ctrl, trgt)
+            Qutrit._draw_ctr(self, 'X_d', ctrl, trgt, ' 1 ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
     
@@ -481,6 +486,32 @@ class Qutrit:
 #         else:
 #             print(self.num, ctrl, trgt)
 #             raise ValueError("Control and Target should be less than the number of qutrits.")
+
+    def CP(self, phase, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[1, 0, 0], [0, 1, 0], [0, 0, np.exp(1j * phase)]])
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['1', '2'])
+            if show_gate == True:
+                return den
+            self.state = den @ self.state
+            Qutrit._draw_ctr(self, f'P(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CP_DAG(self, phase, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[1, 0, 0], [0, 1, 0], [0, 0, np.exp(1j * phase)]])
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['1', '2'])
+            if show_gate == True:
+                return np.linalg.pinv(den)
+            self.state = np.linalg.pinv(den) @ self.state
+            Qutrit._draw_ctr(self, f'Pd(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
             
     def CP_2(self, phase, ctrl, trgt, show_gate = False):
         if ctrl == trgt:
@@ -491,7 +522,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, f'P2(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+            Qutrit._draw_ctr(self, f'P(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt, '  2  ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -504,7 +535,7 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            Qutrit._draw_ctr(self, f'P2*(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+            Qutrit._draw_ctr(self, f'Pd(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt, '  2  ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -517,7 +548,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, f'P1(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+            Qutrit._draw_ctr(self, f'P(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt, '  1  ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
         
@@ -531,7 +562,7 @@ class Qutrit:
             if show_gate == True:
                    return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            Qutrit._draw_ctr(self, f'P1*(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+            Qutrit._draw_ctr(self, f'Pd(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt, '  1  ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
     
@@ -543,7 +574,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, 'U_2', ctrl, trgt)
+            Qutrit._draw_ctr(self, ' U ', ctrl, trgt, ' 2 ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
         
@@ -555,7 +586,7 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            Qutrit._draw_ctr(self, 'U2d', ctrl, trgt)
+            Qutrit._draw_ctr(self, 'U_d', ctrl, trgt, ' 2 ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -567,7 +598,7 @@ class Qutrit:
             if show_gate == True:
                 return den
             self.state = den @ self.state
-            Qutrit._draw_ctr(self, 'U_1', ctrl, trgt)
+            Qutrit._draw_ctr(self, ' U ', ctrl, trgt, ' 1 ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
@@ -579,7 +610,7 @@ class Qutrit:
             if show_gate == True:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
-            Qutrit._draw_ctr(self, 'U1d', ctrl, trgt)
+            Qutrit._draw_ctr(self, 'U_d', ctrl, trgt, ' 1 ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
