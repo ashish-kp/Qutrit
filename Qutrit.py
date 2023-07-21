@@ -440,6 +440,7 @@ class Qutrit:
         if ctrl == trgt:
             raise ValueError("Control cannot be same as Target")
         if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[0, 0, 1], [1, 0, 0], [0, 1, 0]])
             den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['1'])
             if show_gate == True:
                 return den
@@ -452,6 +453,7 @@ class Qutrit:
         if ctrl == trgt:
             raise ValueError("Control cannot be same as Target")
         if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[0, 0, 1], [1, 0, 0], [0, 1, 0]])
             den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['1'])
             if show_gate == True:
                 return np.linalg.pinv(den)
