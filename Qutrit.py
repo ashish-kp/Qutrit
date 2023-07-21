@@ -430,6 +430,57 @@ class Qutrit:
 #             print(self.num, ctrl, trgt)
 #             raise ValueError("Control and Target should be less than the number of qutrits.")
             
+    def CP_2(self, phase, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[1, 0, 0], [0, 1, 0], [0, 0, np.exp(1j * phase)]])
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['2'])
+            if show_gate == True:
+                return den
+            self.state = den @ self.state
+            Qutrit._draw_ctr(self, f'P2(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CP_2_DAG(self, phase, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[1, 0, 0], [0, 1, 0], [0, 0, np.exp(1j * phase)]])
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['2'])
+            if show_gate == True:
+                return np.linalg.pinv(den)
+            self.state = np.linalg.pinv(den) @ self.state
+            Qutrit._draw_ctr(self, f'P2*(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CP_1(self, phase, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[1, 0, 0], [0, 1, 0], [0, 0, np.exp(1j * phase)]])
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['1'])
+            if show_gate == True:
+                return den
+            self.state = den @ self.state
+            Qutrit._draw_ctr(self, f'P1(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+        
+    def CP_1_DAG(self, phase, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            gate_ = np.array([[1, 0, 0], [0, 1, 0], [0, 0, np.exp(1j * phase)]])
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['1'])
+            if show_gate == True:
+                   return np.linalg.pinv(den)
+            self.state = np.linalg.pinv(den) @ self.state
+            Qutrit._draw_ctr(self, f'P1*(pi/{(np.round(np.pi / phase, 1))})', ctrl, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
     
     def CU_2(self, gate_, ctrl, trgt, show_gate = False):
         if ctrl == trgt:
