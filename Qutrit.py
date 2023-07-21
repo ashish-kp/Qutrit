@@ -295,6 +295,15 @@ class Qutrit:
                 print(y, end = '')
                 print('\u2014', end = '')
             print()
+            
+    def barrier(self):
+        max_ = []
+        for x in self.circ_store: max_.append(len(x)) 
+        for i in range(self.num): 
+            while len(self.circ_store[i]) <= np.max(max_): 
+                self.circ_store[i].append('\u2014\u2014\u2014')
+        for i in range(self.num):
+            self.circ_store[i].append('|')
         
     def X01(self, pos):
         x01 = np.array([[0, 1, 0], [1, 0, 0], [0, 0, 1]])
