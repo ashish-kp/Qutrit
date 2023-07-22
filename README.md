@@ -17,6 +17,8 @@ All the gates were constructed as mentioned in the paper [here](https://arxiv.or
 
 # Some Basic Examples
 ![Qutrit Hadamard](example_imgs/Hadamard_qutrit.png)
+![measure](example_imgs/measuremethod.png)
+![CXp1Adder](example_imgs/CXp1adder.png)
 ![Bell States](example_imgs/qutrit_bell.png)
 ![Supadense](example_imgs/Qutrit_superdense.png)
 
