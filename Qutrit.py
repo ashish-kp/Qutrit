@@ -72,6 +72,26 @@ def d2tarr(num, rng):
         mm.append(0)
     return mm[::-1]
 
+def measure_once(elements, probabilities):
+    """A function written using cumulative probability to generate random numbers based on the given probability distribution."""
+    # Ensure that the probabilities array sums up to 1
+    total_prob = sum(probabilities)
+    if np.round(np.sum(probabilities), 8) != 1.0:
+        print(total_prob)
+        raise ValueError("Probabilities should sum up to 1.")
+
+    #Using random module currently to generate random numbers in range [0, 1)
+    rand_num = rn.random()
+
+    # Select an element based on the probabilities
+    cumulative_prob = 0
+    for element, prob in zip(elements, probabilities):
+        cumulative_prob += prob
+        if rand_num <= cumulative_prob:
+            return element
+    # Return the last element if no selection was made (handles rounding errors)
+    return elements[-1]
+
 def t2d(str_):
     num = 0
     str_ = str_[::-1]
@@ -260,7 +280,7 @@ class Qutrit:
                     ans[j][k] += rho[ll[j]][ll[k]]
         return ans
     
-    def get_probs(self, x_l = 10, y_l = 7, p_q = [], f_size = 10):
+    def get_probs(self, x_l = 10, y_l = 7, p_q = [], f_size = 10, get_vals = False):
         """
         Computes and plots the probabilities of the qutrit's states.
 
@@ -280,6 +300,8 @@ class Qutrit:
             if a > 1e-4:
                 vals.append(a)
                 keys.append(d2t(i, self.num - len(p_q)))
+        if get_vals == True:
+            return dict(zip(keys, vals))
         plt.figure(figsize = (x_l, y_l))
         plt.bar(keys, vals)
         plt.ylim(0, max(vals) + 0.1 * max(vals))
@@ -288,6 +310,24 @@ class Qutrit:
             if height > 1e-4:
                 plt.text(i, height, str(np.round(height, 3)), ha='center', va='bottom')
         plt.show()
+        
+    def measure(self, shots = 1000, x_l = 10, y_l = 7, p_q = [], f_size = 10, get_counts = False):
+        counts = {}
+        probs = Qutrit.get_probs(self, x_l, y_l, p_q, f_size, get_vals = True)
+        for i in range(len(probs.keys())): counts[list(probs.keys())[i]] = 0
+        for shot in range(shots): counts[measure_once(list(probs.keys()), list(probs.values()))] += 1
+        if get_counts == True:
+            return counts
+        keys, vals = list(counts.keys()), list(counts.values())
+        plt.figure(figsize = (x_l, y_l))
+        plt.bar(keys, vals)
+        plt.ylim(0, max(vals) + 0.1 * max(vals))
+        plt.title(f"Counts - Total shots = {shots}")
+        for i, height in enumerate(vals):
+            if height > 1e-4:
+                plt.text(i, height, str(np.round(height, 3)), ha='center', va='bottom')
+        plt.show()
+        
         
     def draw(self):
         max_ = []
