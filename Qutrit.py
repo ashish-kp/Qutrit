@@ -3,6 +3,7 @@ import sqtdiat.qops as sq
 import matplotlib.pyplot as plt
 from qiskit.visualization import array_to_latex
 import seaborn as sns
+import random as rn
 
 def _make_unitary(gate, pos, num):
     """
