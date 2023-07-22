@@ -25,4 +25,6 @@ The code doesnot contain any function which performs measurement of any sort. Th
 
 Added the following:
 - Added the methods 'CU_2', 'CU_1', 'CU_2_DAG' etc., for controlled unitary operations, which take in a gate as input and the control and target positions.
-- Added the method 'draw' which is an attempt to visualize the circuits.
+- Added a method 'draw' which is an attempt to visualize the circuits.
+- Added the methods needed for Controlled Phase Operations.(CP, CP_2, CP_1 and their inverses)
+- Added a method 'measure' which uses the random module from python to simulate the act of measurement of the state. Currently the PRNG proves to be kind of inefficient.
