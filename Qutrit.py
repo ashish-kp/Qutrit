@@ -151,6 +151,7 @@ class Qutrit:
         for i in range(self.num - 1):
             state = np.kron(state, np.array([1, 0, 0]))
         self.state = state
+        self.unitary = np.ones((3**self.num, 3**self.num))
         self.circ_store = [['|0>'] for i in range(num)]
         
     def initialize(self, arr, pos):
@@ -354,6 +355,7 @@ class Qutrit:
     def X01(self, pos):
         x01 = np.array([[0, 1, 0], [1, 0, 0], [0, 0, 1]])
         self.state = _make_unitary(x01, pos, self.num) @ self.state
+        self.state = _make_unitary()
         self.circ_store[pos].append('X01')
         
     def X12(self, pos):
@@ -676,6 +678,25 @@ class Qutrit:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
             Qutrit._draw_ctr(self, 'CUd', ctrl, trgt)
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def SWAP(self, ctr, tgt, show_gate = False):
+        if ctr == tgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctr < self.num and tgt < self.num:
+            n = self.num
+            arr = np.eye(3**n)
+            for i in range(3**n):
+                bn = d2tarr(i, n)
+                if bn[ctr] != bn[tgt]:
+                    bn[ctr], bn[tgt] = bn[tgt], bn[ctr]
+                    arr[t2d(bn), i] = 1
+                    arr[i, i] = 0
+            if show_gate == True:
+                return arr
+            self.state = arr @ self.state
+            Qutrit._draw_ctr(self, '*', ctr, tgt)
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
