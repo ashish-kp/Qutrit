@@ -355,7 +355,6 @@ class Qutrit:
     def X01(self, pos):
         x01 = np.array([[0, 1, 0], [1, 0, 0], [0, 0, 1]])
         self.state = _make_unitary(x01, pos, self.num) @ self.state
-        self.state = _make_unitary()
         self.circ_store[pos].append('X01')
         
     def X12(self, pos):
