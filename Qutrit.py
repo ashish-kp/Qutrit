@@ -136,6 +136,13 @@ def _make_ctrl_uni(num, gate_, ctrl, trgt, pos_num):
                         den[t2d(t_val), t2d(t_val_arr)] = gate_2[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
 #                         print(t_val, t_val_arr)
                         t_val_arr[trgt] += 1
+                elif t_val[ctrl] == '0':
+                    t_val_arr = [int(x) for x in t_val]
+                    t_val_arr[trgt] = 0
+                    for j in range(3):
+                        den[t2d(t_val), t2d(t_val_arr)] = gate_2[t2d(str(t_val_arr[trgt])), t2d(str(t_val[trgt]))]
+#                         print(t_val, t_val_arr)
+                        t_val_arr[trgt] += 1
     return den
 
 class Qutrit:
@@ -653,6 +660,30 @@ class Qutrit:
                 return np.linalg.pinv(den)
             self.state = np.linalg.pinv(den) @ self.state
             Qutrit._draw_ctr(self, 'U_d', ctrl, trgt, ' 1 ')
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CU_0(self, gate_, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['0'])
+            if show_gate == True:
+                return den
+            self.state = den @ self.state
+            Qutrit._draw_ctr(self, ' U ', ctrl, trgt, ' 0 ')
+        else:
+            raise ValueError("Control and Target should be less than the number of qutrits.")
+            
+    def CU_0_DAG(self, gate_, ctrl, trgt, show_gate = False):
+        if ctrl == trgt:
+            raise ValueError("Control cannot be same as Target")
+        if ctrl < self.num and trgt < self.num:
+            den = _make_ctrl_uni(self.num, gate_, ctrl, trgt, ['0'])
+            if show_gate == True:
+                return np.linalg.pinv(den)
+            self.state = np.linalg.pinv(den) @ self.state
+            Qutrit._draw_ctr(self, 'U_d', ctrl, trgt, ' 0 ')
         else:
             raise ValueError("Control and Target should be less than the number of qutrits.")
             
