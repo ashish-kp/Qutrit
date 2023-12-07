@@ -101,11 +101,36 @@ def t2d(str_):
     return num
 
 def cx_replace(ctr, tgt, num, rng):
+    """
+    Replaces a value in a ternary array at a specified position.
+
+    Parameters:
+    - ctr: Control position in the ternary array.
+    - tgt: Target position in the ternary array.
+    - num: The decimal number representing the ternary array.
+    - rng: The desired length of the ternary array representation.
+
+    Returns:
+    - decimal: Decimal number obtained after replacing the value in the ternary array at the specified position.
+    """
     ter = d2tarr(num, rng)
     ter[tgt] = (ter[tgt] - ter[ctr]) % 3
     return t2d(ter)
 
 def _make_ctrl_uni(num, gate_, ctrl, trgt, pos_num):
+    """
+    Generates a larger unitary gate based on control and target positions within the gate.
+
+    Parameters:
+    - num: Total number of qutrits in the system.
+    - gate_: Unitary gate transformation represented as a 3x3 NumPy array.
+    - ctrl: Control position within the gate.
+    - trgt: Target position within the gate.
+    - pos_num: Positions within the gate where specific gate transformations are applied.
+
+    Returns:
+    - den: A larger unitary gate represented as a NumPy array incorporating specific gate transformations at specified positions.
+    """
     den = np.eye(3**num) + 1j * np.zeros((3**num, 3**num))
     if len(pos_num) == 1:
         for i in range(3**num):
